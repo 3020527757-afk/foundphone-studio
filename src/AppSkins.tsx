@@ -168,7 +168,7 @@ export function WeChatSkin(p: SkinProps) {
   const conversations = [
     ...new Set(
       p.items
-        .filter((i) => !["朋友圈", "我"].includes(i.folder))
+        .filter((i) => !["朋友圈", "我", "通讯录"].includes(i.folder))
         .map((i) => i.title),
     ),
   ];
@@ -424,7 +424,7 @@ export function WeChatSkin(p: SkinProps) {
                 <Avatar name={ownerNickname} src={ownerProfile?.avatar} />
                 <div>
                   <h2>{ownerNickname}</h2>
-                  <small>微信号：未设置</small>
+                  <small>微信号：{ownerProfile?.meta.wechatId || "未设置"}</small>
                   <button
                     className="wx-profile-status"
                     onClick={() => setUtility("状态")}
