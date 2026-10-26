@@ -356,9 +356,9 @@ export function RedbookSkin(p: Props) {
           {list.map((i) => (
             <button key={i.id} onClick={() => p.onItem(i)}>
               <Media item={i} />
-              <strong>{i.title}</strong>
+              <strong>{i.body || i.title}</strong>
               <div>
-                <Avatar name={i.sender} />
+                <Avatar name={i.sender} src={i.avatar} />
                 <small>{i.sender}</small>
                 <Heart size={12} />
                 <small>{i.likes}</small>
