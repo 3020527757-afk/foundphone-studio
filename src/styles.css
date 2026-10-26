@@ -4918,3 +4918,11 @@ label {
   background: #e34f58;
   transform: rotate(135deg);
 }
+
+
+.wallpaper-photo {
+  background-image: url("./assets/phone-wallpaper.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
