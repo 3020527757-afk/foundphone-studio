@@ -462,7 +462,7 @@ export function WeChatSkin(p: SkinProps) {
                 })}
               </div>
               {p.items
-                .filter((i) => i.folder === "我")
+                .filter((i) => i.folder === "我" && i.id !== "wechat-owner-profile")
                 .map((i) => (
                   <button
                     className="wx-discovery"
