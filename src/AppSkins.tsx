@@ -163,6 +163,8 @@ export function WeChatSkin(p: SkinProps) {
     "readThreads",
     [],
   );
+  const ownerProfile = p.items.find((i) => i.id === "wechat-owner-profile");
+  const ownerNickname = ownerProfile?.meta.nickname || p.owner || "机主";
   const conversations = [
     ...new Set(
       p.items
@@ -419,9 +421,9 @@ export function WeChatSkin(p: SkinProps) {
           ) : (
             <>
               <div className="wx-profile">
-                <Avatar name={p.owner || "机主"} />
+                <Avatar name={ownerNickname} src={ownerProfile?.avatar} />
                 <div>
-                  <h2>{p.owner || "机主"}</h2>
+                  <h2>{ownerNickname}</h2>
                   <small>微信号：未设置</small>
                   <button
                     className="wx-profile-status"
