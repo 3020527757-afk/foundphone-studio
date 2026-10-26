@@ -89,7 +89,9 @@ function WeiboActions({ p, item }: { p: Props; item: Item }) {
   );
 }
 export function WeiboSkin(p: Props) {
-  const { tab, setTab, q, setQ, items } = useContent(p, "关注");
+  const { tab, setTab, q, setQ, items: allItems } = useContent(p, "关注");
+  const profile = allItems.find((i) => i.id === "weibo-owner-profile");
+  const items = allItems.filter((i) => i.id !== "weibo-owner-profile");
   const [feed, setFeed] = useState("全部");
   const list = feed === "全部" ? items : items.filter((i) => i.folder === feed);
   return (
@@ -109,8 +111,9 @@ export function WeiboSkin(p: Props) {
       <div className="catalog-scroll">
         {tab === "我" ? (
           <div className="weibo-profile">
-            <Avatar name={p.owner ?? "我"} />
+            <Avatar name={p.owner ?? "我"} src={profile?.avatar} />
             <h2>{p.owner ?? "我"}</h2>
+            <span>微博ID：{profile?.meta.weiboId || "未设置"}</span>
             <span>{items.length} 条微博</span>
           </div>
         ) : (
