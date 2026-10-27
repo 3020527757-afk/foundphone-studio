@@ -3,7 +3,7 @@
   "id": "ui-test-phone-v2",
   "title": "捡手机",
   "description": "仅用于界面测试，不含剧情",
-  "revision": 28,
+  "revision": 29,
   "phone": {
     "owner": "范哲逸",
     "date": "2026-10-25",
@@ -839,6 +839,15 @@
         "title": "卧槽老负亩突然这样这样一下谁有思路了",
         "body": "卧槽老负亩突然这样这样一下谁有思路了",
         "sender": "allwander.eth",
+        "kind": "text",
+        "folder": "首页",
+        "meta": {}
+      },
+      {
+        "id": "threads-ivyandjexie-post",
+        "title": "我感觉赣赣已经脸黑了啊啊啊啊啊那个生日祝福",
+        "body": "我感觉赣赣已经脸黑了啊啊啊啊啊那个生日祝福",
+        "sender": "ivyandjexie",
         "kind": "text",
         "folder": "首页",
         "meta": {}
