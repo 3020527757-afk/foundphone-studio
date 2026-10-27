@@ -4926,3 +4926,49 @@ label {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+
+.wx-chat-compose {
+  gap: 7px;
+  padding: 8px 9px;
+}
+.wx-chat-compose > button {
+  flex: 0 0 auto;
+  min-height: 36px;
+  justify-content: center;
+  padding: 0;
+}
+.wx-chat-compose .wx-compose-icon {
+  width: 32px;
+  border: 0;
+  background: transparent;
+  color: #454545;
+}
+.wx-chat-compose .wx-compose-input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  border: 0;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: none;
+  padding: 0 10px;
+  color: #222;
+  font: inherit;
+  font-size: 13px;
+}
+.wx-chat-compose .wx-send-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  border-radius: 5px;
+  background: #07c160;
+  color: #fff;
+  padding: 0 9px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.wx-chat-compose .wx-send-button:disabled {
+  opacity: 0.5;
+}
