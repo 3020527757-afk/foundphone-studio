@@ -349,3 +349,24 @@
   font-size: inherit;
   line-height: inherit;
 }
+
+/* Xiaohongshu note detail */
+.ios18 .redbook-post-detail { color:#222; font-size:14px; }
+.ios18 .redbook-post-detail .post-detail-nav > strong { font-size:16px; font-weight:600; }
+.ios18 .redbook-post-detail .post-detail-author { padding:12px 14px; }
+.ios18 .redbook-post-detail .post-detail-author > .catalog-avatar { width:38px; height:38px; }
+.ios18 .redbook-post-detail .post-detail-author strong { color:#222; font-size:14px; font-weight:600; }
+.ios18 .redbook-post-detail .post-detail-author small { margin-top:2px; font-size:11px; color:#999; }
+.ios18 .redbook-post-detail .post-follow { background:#fff; color:#ff2442; border:1px solid #ff2442; padding:6px 17px; font-size:12px; }
+.ios18 .redbook-post-detail .redbook-note-body { padding:0 0 16px; font-size:15px; line-height:1.7; }
+.ios18 .redbook-note-image { display:block; width:100%; max-height:360px; object-fit:contain; background:#f6f6f6; margin:0 0 14px; }
+.ios18 .redbook-note-body > .rich-body { padding:0 15px; font-size:15px; line-height:1.7; white-space:pre-wrap; }
+.ios18 .redbook-note-date { color:#999; font-size:11px; padding:0 15px 12px; }
+.ios18 .redbook-note-actions { min-height:53px; display:flex; align-items:center; justify-content:space-around; border-top:1px solid #f2f2f2; padding:6px 8px; }
+.ios18 .redbook-note-actions button { display:inline-flex; align-items:center; justify-content:center; gap:5px; min-width:34px; border:0; background:transparent; color:#333; font-size:12px; }
+.ios18 .redbook-note-actions button:first-child { margin-right:auto; padding-left:8px; color:#888; }
+.ios18 .redbook-note-actions button:last-child { margin-left:7px; }
+.ios18 .redbook-comments-heading { padding:12px 14px 2px; color:#555; font-size:13px; font-weight:600; border-top:7px solid #f7f7f7; }
+.ios18 .redbook-post-detail .post-detail-reply > button { color:#ff2442; }
+.ios18 .redbook-post-detail .post-detail-reply input { background:#f6f6f6; }
+.ios18 .redbook-post-detail .post-options-menu { z-index:30; }
