@@ -3,7 +3,7 @@
   "id": "ui-test-phone-v2",
   "title": "捡手机",
   "description": "仅用于界面测试，不含剧情",
-  "revision": 21,
+  "revision": 22,
   "phone": {
     "owner": "范哲逸",
     "date": "2026-10-25",
@@ -92,9 +92,10 @@
   "contacts": [
     {
       "id": "test-contact",
-      "name": "测试联系人",
+      "name": "经纪人",
       "phone": "",
-      "bio": "这是一条测试内容。"
+      "bio": "这是一条测试内容。",
+      "avatar": ""
     }
   ],
   "chats": [
@@ -117,7 +118,7 @@
     {
       "id": "test-chat-wechat",
       "app": "wechat",
-      "title": "测试会话",
+      "title": "经纪人",
       "participants": [
         "owner",
         "test-contact"
