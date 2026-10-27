@@ -263,13 +263,6 @@ export function WeChatSkin(p: SkinProps) {
     "[]",
   );
   const storedMessages = readSentWeChatMessages(sentMessageData);
-  const initialPromptCount = storedMessages.filter(
-    (message) =>
-      message.thread === apologyThread &&
-      typeof message.manualStep === "number" &&
-      message.manualStep >= 0 &&
-      message.manualStep < apologyPrompts.length,
-  ).length;
 
   useEffect(() => {
     if (p.thread !== apologyThread) {
