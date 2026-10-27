@@ -3,7 +3,7 @@
   "id": "ui-test-phone-v2",
   "title": "捡手机",
   "description": "仅用于界面测试，不含剧情",
-  "revision": 26,
+  "revision": 27,
   "phone": {
     "owner": "范哲逸",
     "date": "2026-10-25",
@@ -821,6 +821,15 @@
         "title": "下次再真情流露能不能偷偷一點",
         "body": "下次再真情流露能不能偷偷一點",
         "sender": "luneoelowen1",
+        "kind": "text",
+        "folder": "首页",
+        "meta": {}
+      },
+      {
+        "id": "threads-cloudvein-post",
+        "title": "这还说啥了直接一把连带老公一起孝敬了，下次藏好点",
+        "body": "这还说啥了直接一把连带老公一起孝敬了，下次藏好点",
+        "sender": "cloudvein",
         "kind": "text",
         "folder": "首页",
         "meta": {}
