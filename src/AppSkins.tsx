@@ -1,6 +1,6 @@
 import { NativeComposer } from "./DeviceSystem";
 import { useSkinState } from "./skinState";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ChevronLeft,
   Plus,
@@ -83,6 +83,34 @@ function ItemMedia({ item }: { item: Item }) {
     </div>
   );
 }
+type SentWeChatMessage = {
+  id: string;
+  thread: string;
+  body: string;
+  time: string;
+};
+function readSentWeChatMessages(value: string): SentWeChatMessage[] {
+  try {
+    const parsed: unknown = JSON.parse(value);
+    return Array.isArray(parsed)
+      ? parsed.filter(
+          (item): item is SentWeChatMessage =>
+            !!item &&
+            typeof item.id === "string" &&
+            typeof item.thread === "string" &&
+            typeof item.body === "string" &&
+            typeof item.time === "string",
+        )
+      : [];
+  } catch {
+    return [];
+  }
+}
+function currentMessageTime() {
+  const now = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+}
 function MessageList({
   items,
   creator,
@@ -96,6 +124,10 @@ function MessageList({
   onRead: (id: string) => void;
   whatsapp?: boolean;
 }) {
+  const endRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [items.length]);
   return (
     <div className={`skin-messages ${whatsapp ? "wa-wallpaper" : ""}`}>
       <div className="skin-date">{items[0]?.time.slice(0, 10)}</div>
@@ -129,7 +161,50 @@ function MessageList({
           {!whatsapp && i.outgoing && <Avatar name={i.sender} src={i.avatar} />}
         </div>
       ))}
+      <div ref={endRef} />
     </div>
+  );
+}
+function WeChatComposer({
+  value,
+  onChange,
+  onSend,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  onSend: () => void;
+}) {
+  return (
+    <form
+      className="skin-compose wx-chat-compose"
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSend();
+      }}
+    >
+      <button type="button" className="wx-compose-icon" aria-label="语音输入">
+        <Mic size={21} />
+      </button>
+      <input
+        className="wx-compose-input"
+        aria-label="输入消息"
+        placeholder="发送消息"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      />
+      <button type="button" className="wx-compose-icon" aria-label="表情">
+        <Smile size={21} />
+      </button>
+      <button
+        type="submit"
+        className="wx-send-button"
+        aria-label="发送消息"
+        disabled={!value.trim()}
+      >
+        <Send size={16} />
+        <span>发送</span>
+      </button>
+    </form>
   );
 }
 function Compose({
@@ -163,14 +238,44 @@ export function WeChatSkin(p: SkinProps) {
     "readThreads",
     [],
   );
+  const [draft, setDraft] = useState("");
+  useEffect(() => setDraft(""), [p.thread]);
+  const [sentMessageData, setSentMessageData] = useSkinState<string>(
+    p,
+    "sentMessages",
+    "[]",
+  );
+  const storedMessages = readSentWeChatMessages(sentMessageData);
   const ownerProfile = p.items.find((i) => i.id === "wechat-owner-profile");
   const ownerNickname = ownerProfile?.meta.nickname || p.owner || "机主";
+  const sentItems: Item[] = storedMessages.map((message) => ({
+    id: message.id,
+    title: message.thread,
+    body: message.body,
+    richText: "",
+    meta: {},
+    time: message.time,
+    sender: "我",
+    avatar: ownerProfile?.avatar || "",
+    kind: "text",
+    media: "",
+    hidden: false,
+    unlock: "",
+    password: "",
+    folder: "",
+    favorite: false,
+    outgoing: true,
+    read: true,
+    likes: 0,
+    comments: [],
+  }));
   const conversations = [
-    ...new Set(
-      p.items
+    ...new Set([
+      ...p.items
         .filter((i) => !["朋友圈", "我", "通讯录"].includes(i.folder))
         .map((i) => i.title),
-    ),
+      ...sentItems.map((i) => i.title),
+    ]),
   ];
   const contacts = [
     ...new Set(p.items.map((i) => i.sender).filter((s) => s !== "我")),
@@ -280,12 +385,34 @@ export function WeChatSkin(p: SkinProps) {
       ) : p.thread ? (
         <>
           <MessageList
-            items={p.items.filter((i) => i.title === p.thread)}
+            items={[
+            ...p.items.filter((i) => i.title === p.thread && (i.body.trim() || i.media)),
+            ...sentItems.filter((i) => i.title === p.thread),
+          ]}
             creator={p.creator}
             onItem={p.onItem}
             onRead={p.onRead}
           />
-          <Compose creator={p.creator} onAdd={p.onAdd} />
+          {p.creator ? (
+            <Compose creator onAdd={p.onAdd} />
+          ) : (
+            <WeChatComposer
+              value={draft}
+              onChange={setDraft}
+              onSend={() => {
+                if (!draft.trim() || !p.thread) return;
+                const messages = readSentWeChatMessages(sentMessageData);
+                messages.push({
+                  id: `sent-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+                  thread: p.thread,
+                  body: draft,
+                  time: currentMessageTime(),
+                });
+                setSentMessageData(JSON.stringify(messages));
+                setDraft("");
+              }}
+            />
+          )}
         </>
       ) : moments ? (
         <div className="wx-moments">
@@ -336,10 +463,16 @@ export function WeChatSkin(p: SkinProps) {
                     t.includes(query) ||
                     p.items.some(
                       (i) => i.title === t && i.body.includes(query),
+                    ) ||
+                    sentItems.some(
+                      (i) => i.title === t && i.body.includes(query),
                     ),
                 )
                 .map((t) => {
-                  const list = p.items.filter((i) => i.title === t),
+                  const list = [
+                      ...p.items.filter((i) => i.title === t),
+                      ...sentItems.filter((i) => i.title === t),
+                    ],
                     last = list.at(-1)!;
                   return (
                     <button
