@@ -23,7 +23,7 @@ import { RichText } from "../RichText";
 import { Avatar, Media, meta } from "./shared";
 import type { Item, UiValue } from "../schema";
 import "./social-details.css";
-export const socialDetailApps = new Set(["twitter", "weibo"]);
+export const socialDetailApps = new Set(["twitter", "weibo", "redbook"]);
 const count = (n: number) =>
   n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, "") + "w" : String(n);
 export function SocialDetail(p: {
@@ -35,7 +35,7 @@ export function SocialDetail(p: {
   onUi?: (key: string, value: UiValue) => void;
 }) {
   const { item } = p,
-    weibo = p.app === "weibo";
+    weibo = p.app === "weibo", redbook = p.app === "redbook";
   const [liked, setLiked] = useSkinState<boolean>(p, "liked-" + item.id, false),
     [saved, setSaved] = useSkinState<boolean>(p, "saved-" + item.id, false),
     [followed, setFollowed] = useSkinState<boolean>(
@@ -103,19 +103,13 @@ export function SocialDetail(p: {
   );
   return (
     <div
-      className={
-        "app-post-detail " +
-        (weibo
-          ? "weibo-post-detail"
-          : "x-post-detail" +
-            (p.ui?.["x-dark"] !== false ? " x-reference-dark" : ""))
-      }
+      className={"app-post-detail " + (weibo ? "weibo-post-detail" : redbook ? "redbook-post-detail" : "x-post-detail" + (p.ui?.["x-dark"] !== false ? " x-reference-dark" : ""))}
     >
       <header className="post-detail-nav">
         <button aria-label="返回帖子列表" onClick={p.back}>
           <ChevronLeft size={27} />
         </button>
-        <strong>{weibo ? "微博正文" : "帖子"}</strong>
+        <strong>{weibo ? "微博正文" : redbook ? "笔记详情" : "帖子"}</strong>
         <div>
           {weibo && <Headphones size={23} />}
           <button aria-label="帖子更多选项" onClick={() => setMenu(!menu)}>
@@ -150,9 +144,10 @@ export function SocialDetail(p: {
             </button>
           )}
         </div>
-        <div className="post-detail-body">
+        <div className={"post-detail-body " + (redbook ? "redbook-note-body" : "")}>
+          {redbook && item.media && <Media item={item} className="redbook-note-image" />}
           <RichText value={item.richText} fallback={item.body} />
-          {item.media && <Media item={item} />}
+          {!redbook && item.media && <Media item={item} />}
         </div>
         {weibo ? (
           <div className="weibo-share-options">
@@ -166,13 +161,23 @@ export function SocialDetail(p: {
               </button>
             ))}
           </div>
+        ) : redbook ? (
+          <>
+            <div className="redbook-note-date">{item.time}</div>
+            <div className="redbook-note-actions">
+              <button aria-label="评论" onClick={() => setTab("评论")}><MessageCircle size={21} /><span>{count(comments.length)}</span></button>
+              <button aria-label="点赞" aria-pressed={liked} onClick={() => setLiked(!liked)}><Heart size={22} fill={liked ? "#ff2442" : "none"} color={liked ? "#ff2442" : undefined} /><span>{count(item.likes + (liked ? 1 : 0))}</span></button>
+              <button aria-label="收藏" aria-pressed={saved} onClick={() => setSaved(!saved)}><Bookmark size={21} fill={saved ? "#ff2442" : "none"} color={saved ? "#ff2442" : undefined} /><span>{saved ? "已收藏" : "收藏"}</span></button>
+              <button aria-label="分享笔记" onClick={() => setMenu(!menu)}><Share size={21} /></button>
+            </div>
+          </>
         ) : (
           <>
             <div className="x-post-metadata">
               {item.time} · <b>{meta(item, "views", "0")}</b> 次查看
             </div>
             {actions}
-          </>
+          </>}
         )}
         {weibo ? (
           <div className="weibo-detail-tabs">
@@ -206,6 +211,7 @@ export function SocialDetail(p: {
             {sort ? "按时间" : "按热度"}⌄
           </button>
         )}
+        {redbook && <div className="redbook-comments-heading">共 {comments.length} 条评论</div>}
         {tab === "评论" ? (
           <div className="post-detail-comments">
             {replies.map((c, index) => {
@@ -259,7 +265,7 @@ export function SocialDetail(p: {
         <input
           aria-label="回复帖子"
           placeholder={
-            target ? "回复 @" + target : weibo ? "发表你的评论" : "发布你的回复"
+            target ? "回复 @" + target : weibo ? "发表你的评论" : redbook ? "说点什么…" : "发布你的回复"
           }
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
@@ -268,7 +274,7 @@ export function SocialDetail(p: {
           <Send size={20} />
         </button>
       </form>
-      {!weibo && (
+      {!weibo && !redbook && (
         <nav className="x-detail-bottom">
           {[Home, Search, Circle, Bell, MessageCircle].map((Icon, n) => (
             <button
