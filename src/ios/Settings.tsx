@@ -209,8 +209,8 @@ export function NativeSettings({
                 onClick={() => nav.push(work.phone.owner)}
               >
                 <span className="settings-account-avatar">
-                  {safeMedia(work.phone.ownerAvatar) ? (
-                    <img src={safeMedia(work.phone.ownerAvatar)} alt="" />
+                  {safeMedia(work.phone.ownerAvatar ?? "") ? (
+                    <img src={safeMedia(work.phone.ownerAvatar ?? "")} alt="" />
                   ) : (
                     work.phone.owner.slice(0, 1)
                   )}
