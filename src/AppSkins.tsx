@@ -256,6 +256,7 @@ export function WeChatSkin(p: SkinProps) {
     [],
   );
   const [draft, setDraft] = useState("");
+  const dialogueTimerRef = useRef<number | null>(null);
   const [sentMessageData, setSentMessageData] = useSkinState<string>(
     p,
     "sentMessages",
@@ -275,18 +276,35 @@ export function WeChatSkin(p: SkinProps) {
       setDraft("");
       return;
     }
+    const messages = readSentWeChatMessages(sentMessageData);
+    const promptCount = messages.filter(
+      (message) =>
+        message.thread === apologyThread &&
+        typeof message.manualStep === "number" &&
+        message.manualStep >= 0 &&
+        message.manualStep < apologyPrompts.length,
+    ).length;
     setDraft(
-      initialPromptCount < apologyPrompts.length
-        ? apologyPrompts[initialPromptCount]
+      promptCount < apologyPrompts.length
+        ? apologyPrompts[promptCount]
         : "",
     );
   }, [p.thread, sentMessageData]);
 
   useEffect(() => {
-    if (p.thread !== apologyThread || initialPromptCount < apologyPrompts.length)
-      return;
+    if (p.thread !== apologyThread) return;
+    const messages = readSentWeChatMessages(sentMessageData);
+    const promptCount = messages.filter(
+      (message) =>
+        message.thread === apologyThread &&
+        typeof message.manualStep === "number" &&
+        message.manualStep >= 0 &&
+        message.manualStep < apologyPrompts.length,
+    ).length;
+    if (promptCount < apologyPrompts.length) return;
+
     const completedSteps = new Set(
-      storedMessages
+      messages
         .filter(
           (message) =>
             message.thread === apologyThread &&
@@ -300,11 +318,11 @@ export function WeChatSkin(p: SkinProps) {
     if (nextStep < 0) return;
 
     const step = apologySequence[nextStep];
-    const timer = window.setTimeout(() => {
+    dialogueTimerRef.current = window.setTimeout(() => {
       if (step.outgoing) setDraft(step.body);
-      const sendTimer = window.setTimeout(() => {
-        const messages = readSentWeChatMessages(sentMessageData);
-        messages.push({
+      dialogueTimerRef.current = window.setTimeout(() => {
+        const updated = readSentWeChatMessages(sentMessageData);
+        updated.push({
           id: `scripted-${apologyThread}-${nextStep}`,
           thread: apologyThread,
           body: step.body,
@@ -321,13 +339,18 @@ export function WeChatSkin(p: SkinProps) {
           outgoing: step.outgoing,
           dialogueStep: nextStep,
         });
-        setSentMessageData(JSON.stringify(messages));
+        setSentMessageData(JSON.stringify(updated));
         if (step.outgoing) setDraft("");
       }, step.outgoing ? 700 : 0);
-      return () => window.clearTimeout(sendTimer);
     }, 900);
-    return () => window.clearTimeout(timer);
-  }, [p.thread, sentMessageData]);
+
+    return () => {
+      if (dialogueTimerRef.current !== null) {
+        window.clearTimeout(dialogueTimerRef.current);
+        dialogueTimerRef.current = null;
+      }
+    };
+  }, [p.thread, sentMessageData, p.items]);
   const ownerProfile = p.items.find((i) => i.id === "wechat-owner-profile");
   const ownerNickname = ownerProfile?.meta.nickname || p.owner || "机主";
   const sentItems: Item[] = storedMessages.map((message) => ({
