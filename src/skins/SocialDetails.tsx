@@ -177,7 +177,7 @@ export function SocialDetail(p: {
               {item.time} · <b>{meta(item, "views", "0")}</b> 次查看
             </div>
             {actions}
-          </>}
+          </>
         )}
         {weibo ? (
           <div className="weibo-detail-tabs">
@@ -196,7 +196,7 @@ export function SocialDetail(p: {
               </button>
             ))}
           </div>
-        ) : (
+        ) : !redbook ? (
           <div className="x-related-row">
             <button onClick={() => setSort(!sort)}>
               {sort ? "最新" : "相关"}⌄
@@ -205,7 +205,7 @@ export function SocialDetail(p: {
               查看引用 ›
             </button>
           </div>
-        )}
+        ) : null}
         {weibo && (
           <button className="weibo-sort" onClick={() => setSort(!sort)}>
             {sort ? "按时间" : "按热度"}⌄
