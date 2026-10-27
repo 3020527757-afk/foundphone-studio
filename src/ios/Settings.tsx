@@ -19,7 +19,7 @@ import {
   Globe,
   Mic,
 } from "lucide-react";
-import type { Work, Item } from "../schema";
+import { safeMedia, type Work, type Item } from "../schema";
 import { IOSToggle } from "../vendor/konsta/Toggle";
 import { NavigationPage, useNavigation } from "./Navigation";
 type Row = [ComponentType<{ size?: number }>, string, string];
@@ -208,7 +208,13 @@ export function NativeSettings({
                 className="settings-account"
                 onClick={() => nav.push(work.phone.owner)}
               >
-                <span>{work.phone.owner.slice(0, 1)}</span>
+                <span className="settings-account-avatar">
+                  {safeMedia(work.phone.ownerAvatar) ? (
+                    <img src={safeMedia(work.phone.ownerAvatar)} alt="" />
+                  ) : (
+                    work.phone.owner.slice(0, 1)
+                  )}
+                </span>
                 <div>
                   <strong>{work.phone.owner}</strong>
                   <small>Apple 账户、iCloud 与更多</small>
