@@ -15,10 +15,11 @@ import {
   User,
   Users,
   Share2,
+  Send,
   ThumbsUp,
 } from "lucide-react";
 import { useState } from "react";
-import type { Item } from "../schema";
+import { makeItem, type Item } from "../schema";
 import {
   Avatar,
   Empty,
@@ -31,7 +32,7 @@ import {
   useContent,
   type Props,
 } from "./shared";
-function Actions({ p, item }: { p: Props; item: Item }) {
+function Actions({ p, item, directMessage = false }: { p: Props; item: Item; directMessage?: boolean }) {
   const [liked, setLiked] = useSkinState<boolean>(p, `liked-${item.id}`, false),
     [saved, setSaved] = useSkinState<boolean>(p, `saved-${item.id}`, false);
   return (
@@ -44,7 +45,12 @@ function Actions({ p, item }: { p: Props; item: Item }) {
         <MessageCircle size={17} />
         {item.comments.length || ""}
       </button>
-      <button aria-label={`详情${item.title}`} onClick={() => p.onItem(item)}>
+      {directMessage && (
+        <button aria-label={`私信${item.sender}`} onClick={() => p.onItem(item)}>
+          <Send size={17} />
+        </button>
+      )}
+      <button aria-label={`详情${item.title}` onClick={() => p.onItem(item)}>
         <Repeat2 size={17} />
         {meta(item, "reposts")}
       </button>
@@ -197,7 +203,21 @@ export function XSkin(p: Props) {
   );
 }
 export function ThreadsSkin(p: Props) {
-  const { tab, setTab, items } = useContent(p, "为你推荐");
+  const { tab, setTab, items: sourceItems } = useContent(p, "为你推荐");
+  const featuredPost = makeItem({
+    id: "threads-post-pmhmkqxome",
+    title: "pmhmkqxome",
+    body: "气死爸爸了",
+    sender: "pmhmkqxome",
+    time: sourceItems[0]?.time || "2026-10-28 09:41",
+    kind: "post",
+    folder: "正在关注",
+    meta: { handle: "pmhmkqxome", following: "true" },
+  });
+  const items = [
+    featuredPost,
+    ...sourceItems.filter((item) => item.id !== featuredPost.id),
+  ];
   return (
     <div className="catalog-skin threads-ui">
       <Header p={p} />
@@ -228,7 +248,7 @@ export function ThreadsSkin(p: Props) {
                 <p>{i.body}</p>
                 {i.media && <Media item={i} />}
               </button>
-              <Actions p={p} item={i} />
+              <Actions p={p} item={i} directMessage />
               <button className="thread-replies" onClick={() => p.onItem(i)}>
                 {i.comments.length} 条回复
               </button>
