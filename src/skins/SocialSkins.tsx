@@ -32,7 +32,15 @@ import {
   useContent,
   type Props,
 } from "./shared";
-function Actions({ p, item, directMessage = false }: { p: Props; item: Item; directMessage?: boolean }) {
+function Actions({
+  p,
+  item,
+  directMessage = false,
+}: {
+  p: Props;
+  item: Item;
+  directMessage?: boolean;
+}) {
   const [liked, setLiked] = useSkinState<boolean>(p, `liked-${item.id}`, false),
     [saved, setSaved] = useSkinState<boolean>(p, `saved-${item.id}`, false);
   return (
@@ -50,7 +58,7 @@ function Actions({ p, item, directMessage = false }: { p: Props; item: Item; dir
           <Send size={17} />
         </button>
       )}
-      <button aria-label={`详情${item.title}` onClick={() => p.onItem(item)}>
+      <button aria-label={`详情${item.title}`} onClick={() => p.onItem(item)}>
         <Repeat2 size={17} />
         {meta(item, "reposts")}
       </button>
