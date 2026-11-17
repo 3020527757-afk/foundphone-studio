@@ -3,7 +3,7 @@
   "id": "ui-test-phone-v2",
   "title": "捡手机",
   "description": "仅用于界面测试，不含剧情",
-  "revision": 32,
+  "revision": 33,
   "phone": {
     "owner": "范哲逸",
     "date": "2026-10-25",
@@ -18,7 +18,7 @@
     {
       "id": "appstore",
       "name": "App Store",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -61,7 +61,7 @@
     {
       "id": "mail",
       "name": "邮件",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -71,7 +71,7 @@
     {
       "id": "reminders",
       "name": "提醒事项",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -80,7 +80,7 @@
     {
       "id": "files",
       "name": "文件",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -90,7 +90,7 @@
     {
       "id": "maps",
       "name": "地图",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -100,7 +100,7 @@
     {
       "id": "wallet",
       "name": "钱包",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -109,7 +109,7 @@
     {
       "id": "health",
       "name": "健康",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -118,7 +118,7 @@
     {
       "id": "find",
       "name": "查找",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -127,7 +127,7 @@
     {
       "id": "calculator",
       "name": "计算器",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -137,7 +137,7 @@
     {
       "id": "qq",
       "name": "QQ",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -148,7 +148,7 @@
     {
       "id": "bilibili",
       "name": "哔哩哔哩",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -159,7 +159,7 @@
     {
       "id": "netease",
       "name": "网易云音乐",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -168,7 +168,7 @@
     {
       "id": "delivery",
       "name": "外卖",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -177,7 +177,7 @@
     {
       "id": "forum",
       "name": "论坛",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -186,7 +186,7 @@
     {
       "id": "whatsapp",
       "name": "WhatsApp",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -196,7 +196,7 @@
     {
       "id": "tiktok",
       "name": "TikTok",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -206,7 +206,7 @@
     {
       "id": "telegram",
       "name": "Telegram",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -215,7 +215,7 @@
     {
       "id": "discord",
       "name": "Discord",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -226,7 +226,7 @@
     {
       "id": "snapchat",
       "name": "Snapchat",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -235,7 +235,7 @@
     {
       "id": "facebook",
       "name": "Facebook",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -244,7 +244,7 @@
     {
       "id": "messenger",
       "name": "Messenger",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
@@ -253,7 +253,7 @@
     {
       "id": "reddit",
       "name": "Reddit",
-      "installed": true,
+      "installed": false,
       "visible": false,
       "dock": false,
       "folder": "",
